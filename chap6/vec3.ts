@@ -69,7 +69,7 @@ class Vec3 {
       return Vec3.multVec3Num(u, v as number)
     } else if (v instanceof Vec3) {
       // return new Vec3(u * v.e[0], u * v.e[1], u * v.e[2])
-      return Vec3.multVec3Num(v, u)
+      return Vec3.multVec3Num(v, u as number)
     } else {
       throw new Error('Bad args')
     }
