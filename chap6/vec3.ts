@@ -3,18 +3,20 @@ interface Vec3 {
 }
 
 type Vec3Argument = Vec3 | number
-type Vec3OptionalArgument = Vec3 | number | undefined
-type NumOptional = number | undefined
 
 class Vec3 {
   e: Array<number>
 
   constructor (
-    x: Vec3OptionalArgument = 0,
-    y: NumOptional = 0,
-    z: NumOptional = 0
+    x?: Vec3Argument,
+    y?: number,
+    z?: number
   ) {
-    this.e = x instanceof Vec3 ? [...x.e] : [x, y, z]
+    if (x instanceof Vec3) {
+      this.e = [...x.e]
+    } else {
+      this.e = [x ?? 0, y ?? 0, z ?? 0]
+    }
   }
 
   x = () => this.e[0]
@@ -99,9 +101,9 @@ export default Vec3
 export const dot = Vec3.dot
 
 export const vec3 = (
-  x: Vec3OptionalArgument = 0,
-  y: NumOptional = 0,
-  z: NumOptional = 0
+  x?: Vec3Argument,
+  y?: number,
+  z?: number
 ) => new Vec3(x, y, z)
 
 export const point3 = vec3  // 3D point
