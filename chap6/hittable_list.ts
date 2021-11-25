@@ -11,7 +11,7 @@ export default class HittableList extends Hittable {
   add = (obj: Hittable) => this.objects.push(obj)
 
   hit = (r: Ray, t_min: number, t_max: number): hit_record | false => {
-    let temp_rec: hit_record | null = null
+    let temp_rec: hit_record | undefined
     let hit_anything = false
     let closest_so_far: number = t_max
 
