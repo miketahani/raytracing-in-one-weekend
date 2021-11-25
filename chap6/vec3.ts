@@ -1,7 +1,3 @@
-interface Vec3 {
-  e: Array<number>
-}
-
 type Vec3Argument = Vec3 | number
 
 class Vec3 {
@@ -12,11 +8,7 @@ class Vec3 {
     y?: number,
     z?: number
   ) {
-    if (x instanceof Vec3) {
-      this.e = [...x.e]
-    } else {
-      this.e = [x ?? 0, y ?? 0, z ?? 0]
-    }
+    this.e = x instanceof Vec3 ? [...x.e] : [x ?? 0, y ?? 0, z ?? 0]
   }
 
   x = () => this.e[0]
