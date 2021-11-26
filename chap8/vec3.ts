@@ -105,6 +105,10 @@ class Vec3 {
       return p
     }
   }
+
+  static random_unit_vector = (): Vec3 => {
+    return Vec3.unit_vector(Vec3.random_in_unit_sphere())
+  }
 }
 
 export default Vec3
