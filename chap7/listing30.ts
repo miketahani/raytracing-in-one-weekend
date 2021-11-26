@@ -11,11 +11,11 @@ import { write_color } from './color.ts'
 
 import Camera from './camera.ts'
 
+import Hittable from '../chap6/hittable.ts'
 import HittableList from '../chap6/hittable_list.ts'
 import Sphere from '../chap6/sphere.ts'
 
-// FIXME How to take any `world` extended from `Hittable`?
-function ray_color(r: Ray, world: HittableList): Vec3 {
+function ray_color(r: Ray, world: Hittable): Vec3 {
   let rec = world.hit(r, 0, Infinity)
 
   if (rec) {

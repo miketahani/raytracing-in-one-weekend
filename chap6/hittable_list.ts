@@ -1,5 +1,4 @@
-import { hit_record } from './hittable.ts'
-import Hittable from './hittable.ts'
+import Hittable, { hit_record } from './hittable.ts'
 
 import Ray from '../chap4/ray.js'
 
