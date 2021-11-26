@@ -10,7 +10,7 @@ import { random_double } from './common.ts'
 let rayCount = 0
 
 function ray_color(r: Ray, world: Hittable, depth: number): Vec3 {
-  if (++rayCount % 10_000 === 0) {
+  if (++rayCount % 25_000 === 0) {
     console.error(`Ray color queries: ${rayCount}`)
   }
 
@@ -18,14 +18,13 @@ function ray_color(r: Ray, world: Hittable, depth: number): Vec3 {
     return color(0, 0, 0)
   }
 
-  let rec = world.hit(r, 0, Infinity)
+  const rec = world.hit(r, 0, Infinity)
 
   if (rec) {
     const p = rec.p as Vec3
     const normal = rec.normal as Vec3
     const target = p.add(normal).add(Vec3.random_in_unit_sphere())
-    const bounce = ray(p, target.sub(p))
-    return ray_color(bounce, world, depth - 1).mult(0.5)
+    return ray_color(ray(p, target.sub(p)), world, depth - 1).mult(0.5)
   }
 
   const unit_direction = Vec3.unit_vector(r.direction())
@@ -38,7 +37,7 @@ function main () {
   const aspect_ratio = 16.0 / 9.0
   const image_width = 400
   const image_height = Math.floor(image_width / aspect_ratio)
-  const samples_per_pixel = 10
+  const samples_per_pixel = 100
   const max_depth = 50
 
   // World
