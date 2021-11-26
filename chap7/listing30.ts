@@ -47,10 +47,10 @@ function main () {
 
   console.log(`P3\n${image_width} ${image_height}\n255`)
 
-  for (let j = image_height - 1; j >= 0; --j) {
+  for (let j = image_height - 1; j >= 0; j--) {
     console.error(`Scanlines remaining: ${j}`)
 
-    for (let i = 0; i < image_width; ++i) {
+    for (let i = 0; i < image_width; i++) {
       let pixel_color = color(0, 0, 0)
 
       for (let s = 0; s < samples_per_pixel; s++) {
