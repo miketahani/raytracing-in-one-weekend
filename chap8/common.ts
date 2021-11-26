@@ -2,7 +2,7 @@ export const degrees_to_radians = (degrees: number): number => {
   return degrees * Math.PI / 180.0
 }
 
-export const random_double = (min: number = 0, max: number = 1) => {
+export const random_double = (min: number = 0, max: number = 1): number => {
   // Returns a random real in [min,max).
   return min + (max - min) * Math.random()
 }
