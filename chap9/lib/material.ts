@@ -10,6 +10,12 @@ interface Hit {
 type MatReturn = Hit | false
 
 export class Material {
+  albedo: Color
+
+  constructor(a: Color) {
+    this.albedo = a
+  }
+
   scatter = (
     r_in: Ray,
     rec: hit_record
@@ -18,16 +24,7 @@ export class Material {
   }
 }
 
-export default (): Material => new Material()
-
 export class Lambertian extends Material {
-  albedo: Color
-
-  constructor(a: Color) {
-    super()
-    this.albedo = a
-  }
-
   scatter = (
     r_in: Ray,
     rec: hit_record
@@ -44,13 +41,6 @@ export class Lambertian extends Material {
 export const lambertian = (a: Color) => new Lambertian(a)
 
 export class Metal extends Material {
-  albedo: Color
-
-  constructor(a: Color) {
-    super()
-    this.albedo = a
-  }
-
   scatter = (
     r_in: Ray,
     rec: hit_record
