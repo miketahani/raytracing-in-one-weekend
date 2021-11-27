@@ -43,19 +43,19 @@ class Vec3 {
 
   clone = (): Vec3 => new Vec3(this)
 
-  static add = (u: Vec3, v: Vec3): Vec3 => {
+  static add(u: Vec3, v: Vec3): Vec3 {
     return new Vec3(u.e[0] + v.e[0], u.e[1] + v.e[1], u.e[2] + v.e[2])
   }
 
-  static sub = (u: Vec3, v: Vec3): Vec3 => {
+  static sub(u: Vec3, v: Vec3): Vec3 {
     return new Vec3(u.e[0] - v.e[0], u.e[1] - v.e[1], u.e[2] - v.e[2])
   }
 
-  static multVec3Num = (v: Vec3, n: number): Vec3 => {
+  static multVec3Num(v: Vec3, n: number): Vec3 {
     return new Vec3(v.e[0] * n, v.e[1] * n, v.e[2] * n)
   }
 
-  static mult = (u: Vec3Argument, v: Vec3Argument): Vec3 => {
+  static mult(u: Vec3Argument, v: Vec3Argument): Vec3 {
     if (u instanceof Vec3 && v instanceof Vec3) {
       return new Vec3(u.e[0] * v.e[0], u.e[1] * v.e[1], u.e[2] * v.e[2])
     } else if (u instanceof Vec3) {
@@ -70,15 +70,15 @@ class Vec3 {
     }
   }
 
-  static div = (v: Vec3, t: number): Vec3 => {
+  static div(v: Vec3, t: number): Vec3 {
     return Vec3.mult(v, 1 / t)
   }
 
-  static dot = (u: Vec3, v: Vec3): number => {
+  static dot(u: Vec3, v: Vec3): number {
     return u.e[0] * v.e[0] + u.e[1] * v.e[1] + u.e[2] * v.e[2]
   }
 
-  static cross = (u: Vec3, v: Vec3): Vec3 => {
+  static cross(u: Vec3, v: Vec3): Vec3 {
     return new Vec3(
       u.e[1] * v.e[2] - u.e[2] * v.e[1],
       u.e[2] * v.e[0] - u.e[0] * v.e[2],
@@ -86,11 +86,11 @@ class Vec3 {
     )
   }
 
-  static unit_vector = (v: Vec3): Vec3 => {
+  static unit_vector(v: Vec3): Vec3 {
     return Vec3.div(v, v.length())
   }
 
-  static random = (min: number = 0, max: number = 1): Vec3 => {
+  static random(min: number = 0, max: number = 1): Vec3 {
     return new Vec3(
       random_double(min, max),
       random_double(min, max),
@@ -98,7 +98,7 @@ class Vec3 {
     )
   }
 
-  static random_in_unit_sphere = (): Vec3 => {
+  static random_in_unit_sphere(): Vec3 {
     while (true) {
       const p = Vec3.random(-1, 1)
       if (p.length_squared() >= 1) continue;
@@ -106,14 +106,25 @@ class Vec3 {
     }
   }
 
-  static random_unit_vector = (): Vec3 => {
+  static random_unit_vector(): Vec3 {
     return Vec3.unit_vector(Vec3.random_in_unit_sphere())
+  }
+
+  static random_in_hemisphere(normal: Vec3): Vec3 {
+    const in_unit_sphere = Vec3.random_in_unit_sphere()
+
+    if (Vec3.dot(in_unit_sphere, normal) > 0.0) {
+      return in_unit_sphere
+    }
+    return in_unit_sphere.neg()
   }
 }
 
 export default Vec3
 
-export const dot = Vec3.dot
+
+export class Color extends Vec3 {}
+export class Point3 extends Vec3 {}
 
 export const vec3 = (
   x?: Vec3Argument,
@@ -121,5 +132,18 @@ export const vec3 = (
   z?: number
 ) => new Vec3(x, y, z)
 
-export const point3 = vec3  // 3D point
-export const color = vec3   // RGB color
+// 3D point
+export const point3 = (
+  x?: Vec3Argument,
+  y?: number,
+  z?: number
+) => new Point3(x, y, z)
+
+// RGB color
+export const color = (
+  x?: Vec3Argument,
+  y?: number,
+  z?: number
+) => new Color(x, y, z)
+
+export const dot = Vec3.dot
