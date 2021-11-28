@@ -69,9 +69,7 @@ export class Metal extends Material {
 
 export const metal = (a: Color, f: number) => new Metal(a, f)
 
-const Colors = {
-  Black: color(1.0, 1.0, 1.0)
-}
+const black = color(1.0, 1.0, 1.0)
 
 export class Dielectric extends Material {
   ir: number
@@ -87,15 +85,21 @@ export class Dielectric extends Material {
   ): MatReturn => {
     const refraction_ratio = rec.front_face ? (1.0 / this.ir) : this.ir
     const unit_direction = Vec3.unit_vector(r_in.direction())
-    const refracted = Vec3.refract(
-      unit_direction,
-      rec.normal as Vec3,
-      refraction_ratio
-    )
-    return {
-      scattered: ray(rec.p as Vec3, refracted),
-      attenuation: Colors.Black
-    }
+
+    const p = rec.p as Vec3
+    const normal = rec.normal as Vec3
+
+    const cos_theta = Math.min(dot(unit_direction.neg(), normal), 1.0)
+    const sin_theta = Math.sqrt(1.0 - cos_theta * cos_theta)
+
+    const cannot_refract = refraction_ratio * sin_theta > 1.0
+    const direction = cannot_refract
+      ? Vec3.reflect(unit_direction, normal)
+      : Vec3.refract(unit_direction, normal, refraction_ratio)
+
+    const scattered = ray(p, direction)
+
+    return { scattered, attenuation: black }
   }
 }
 
