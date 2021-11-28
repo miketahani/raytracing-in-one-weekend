@@ -16,4 +16,3 @@ export class Ray {
 }
 
 export default (origin: Vec3, direction: Vec3) => new Ray(origin, direction)
-// export default Ray
