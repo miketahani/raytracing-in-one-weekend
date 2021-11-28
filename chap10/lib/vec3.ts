@@ -141,6 +141,11 @@ class Vec3 {
     )
     return r_out_perp.add(r_out_parallel)
   }
+
+  static reflectance(cosine: number, ref_idx: number): number {
+    const r0 = ((1 - ref_idx) / (1 + ref_idx)) ** 2
+    return r0 + (1 - r0) * ((1 - cosine) ** 5)
+  }
 }
 
 export default Vec3

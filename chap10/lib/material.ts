@@ -1,6 +1,7 @@
 import Vec3, { Color, color, dot } from './vec3.ts'
 import ray, { Ray } from './ray.ts'
 import { hit_record } from './hittable.ts'
+import { random_double } from './common.ts'
 
 interface Hit {
   scattered: Ray
@@ -93,9 +94,16 @@ export class Dielectric extends Material {
     const sin_theta = Math.sqrt(1.0 - cos_theta * cos_theta)
 
     const cannot_refract = refraction_ratio * sin_theta > 1.0
-    const direction = cannot_refract
-      ? Vec3.reflect(unit_direction, normal)
-      : Vec3.refract(unit_direction, normal, refraction_ratio)
+
+    let direction: Vec3
+    if (
+      cannot_refract ||
+      (Vec3.reflectance(cos_theta, refraction_ratio) > random_double())
+    ) {
+      direction = Vec3.reflect(unit_direction, normal)
+    } else {
+      direction = Vec3.refract(unit_direction, normal, refraction_ratio)
+    }
 
     const scattered = ray(p, direction)
 
