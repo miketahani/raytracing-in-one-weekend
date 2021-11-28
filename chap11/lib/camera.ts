@@ -8,20 +8,29 @@ export default class Camera {
   #horizontal: Vec3
   #vertical: Vec3
 
-  constructor (vfov: number, aspect_ratio: number) {
+  constructor (
+    lookfrom: Point3,
+    lookat: Point3,
+    vup: Vec3,
+    vfov: number,
+    aspect_ratio: number
+  ) {
     const theta = degrees_to_radians(vfov)
     const h = Math.tan(theta / 2)
     const viewport_height = 2.0 * h
     const viewport_width = aspect_ratio * viewport_height
-    const focal_length = 1.0
 
-    this.#origin = point3(0, 0, 0)
-    this.#horizontal = vec3(viewport_width, 0.0, 0.0)
-    this.#vertical = vec3(0.0, viewport_height, 0.0);
+    const w = Vec3.unit_vector(lookfrom.sub(lookat))
+    const u = Vec3.unit_vector(Vec3.cross(vup, w))
+    const v = Vec3.cross(w, u)
+
+    this.#origin = lookfrom
+    this.#horizontal = u.mult(viewport_width)
+    this.#vertical = v.mult(viewport_height)
     this.#lower_left_corner = this.#origin
       .sub(this.#horizontal.div(2))
       .sub(this.#vertical.div(2))
-      .sub(vec3(0, 0, focal_length))
+      .sub(w)
   }
 
   get_ray = (u: number, v: number): Ray => {
