@@ -41,12 +41,20 @@ export class Lambertian extends Material {
 export const lambertian = (a: Color) => new Lambertian(a)
 
 export class Metal extends Material {
+  fuzz: number
+
+  constructor (a: Color, f: number) {
+    super(a)
+    this.fuzz = f
+  }
+
   scatter = (
     r_in: Ray,
     rec: hit_record
   ): MatReturn => {
     const reflected = Vec3.reflect(Vec3.unit_vector(r_in.direction()), rec.normal as Vec3)
-    const scattered = ray(rec.p as Vec3, reflected)
+    const offset = reflected.add(Vec3.random_in_unit_sphere().mult(this.fuzz))
+    const scattered = ray(rec.p as Vec3, offset)
 
     if (dot(scattered.direction(), rec.normal as Vec3) <= 0) {
       return false
@@ -56,4 +64,4 @@ export class Metal extends Material {
   }
 }
 
-export const metal = (a: Color) => new Metal(a)
+export const metal = (a: Color, f: number) => new Metal(a, f)
