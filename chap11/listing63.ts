@@ -1,6 +1,6 @@
 import Vec3, { point3, color } from './lib/vec3.ts'
 import { Ray } from './lib/ray.ts'
-import Camera from './lib/camera.ts'
+import Camera from './lib/camera.63.ts'
 import Hittable from './lib/hittable.ts'
 import HittableList from './lib/hittable_list.ts'
 import sphere from './lib/sphere.ts'
